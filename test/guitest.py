@@ -1,9 +1,9 @@
 import tkinter as tk
-import pickle
+import save
 import kanboard1 as kb
 
 def app():
-    items = get_items()
+    items = save.load_all("pickle.dat")
     counter = kb.TaskCounter()
     window = tk.Tk()
     window.geometry("1280x720")
@@ -35,6 +35,7 @@ def app():
             end_date_var.set("")
             worker_var.set("")
 
+
         deadline_label = tk.Label(top, text="Deadline: ")
         deadline_entry = tk.Entry(top, textvariable=deadline_var)
 
@@ -54,14 +55,12 @@ def app():
         worker_entry.grid(row=2,column=1)
         submit_btn.grid(row=3,column=0)
 
-
-
-
     new_entry_btn = tk.Button(window, text="New Ticket", command=new_ticket)
     row, column = window.grid_size()
     new_entry_btn.grid(row=row, column=column)
 
-    
+    save_btn = tk.Button(window, text="Plz Save", command=save.save_all)
+    save_btn.grid(row=row+1, column=column)
 
     window.mainloop()
 
@@ -80,7 +79,7 @@ def add_ticket(window, counter, ticket):
         listvariable=info_var,
         height=6,
         width=30,
-        selectmode="extended"
+        selectmode="extended",
     )
     listbox.grid(
         column=check_ticket_type(ticket, counter),
@@ -89,33 +88,6 @@ def add_ticket(window, counter, ticket):
         pady=10
     )
 
-def get_items():
-
-    test = kb.MainTask("Tomorrow", "Yesterday","Nico")
-    test2 = kb.ProgramTask("Tomorrow","Yesterday","Nico","Facebook")
-
-    test3 = kb.MainTask("Tomorrow", "Yesterday","Nico")
-    test4 = kb.ProgramTask("Tomorrow","Yesterday","Nico","Facebook")
-    tes = kb.MainTask("Tomorrow", "Yesterday","Nico")
-    test5 = kb.ProgramTask("Tomorrow","Yesterday","Nico","Facebook")
-
-    PIK="pickle.dat"
-
-    # We dump data list which includes classes to pickle.dat
-    with open(PIK,"wb") as f:
-        pickle.dump(kb.data,f)
-
-    # Loads everything from pickle.dat
-    def loadall(filename):
-        with open(filename, "rb") as f:
-            while True:
-                try:
-                    yield pickle.load(f)
-                except EOFError:
-                    break
-
-    items = loadall("pickle.dat")
-    return items
 
 
 def check_ticket_type(obj, counter):
