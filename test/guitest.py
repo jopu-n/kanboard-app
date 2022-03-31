@@ -67,27 +67,46 @@ def app():
 
 def add_ticket(window, counter, ticket):
     info = (
-            "Ticket ID: " + str(ticket.ticket_id),
-            "Deadline: " + ticket.deadline, 
-            "Start Date: " + str(ticket.start_date.strftime("%x")), 
-            "End Date: " + ticket.end_date, 
-            "Worker: " + ticket.worker
-        )
-    info_var = tk.StringVar(value=info)
-
-    listbox = tk.Listbox(
-        window,
-        listvariable=info_var,
-        height=6,
-        width=30,
-        selectmode="extended",
+        f"""\
+        Ticket id: {str(ticket.ticket_id)}\
+        \n  Deadline: {ticket.deadline}\
+        \n  Start date: {str(ticket.start_date.strftime("%x"))}\
+        \n  End date: {ticket.end_date}\
+        \n  Worker: {ticket.worker}\
+        """
     )
-    listbox.grid(
+
+    button = tk.Button(
+        window,
+        text=info,
+        command=lambda x=ticket: show_info(x),
+        height=6,
+        width=20,
+    )
+    button.grid(
         column=check_ticket_type(ticket, counter),
         row=ticket.get_kbpos(),
         padx=10,
         pady=10
     )
+
+def show_info(ticket):
+    top = tk.Toplevel()
+    top.title("Information")
+    top.geometry("300x200")
+    text = (
+        f""" \
+        \n  Ticket id: {str(ticket.ticket_id)}\
+        \n  Deadline: {ticket.deadline}\
+        \n  Start date: {str(ticket.start_date.strftime("%x"))}\
+        \n  End date: {ticket.end_date}\
+        \n  Worker: {ticket.worker}\
+        """
+    )
+    text_box = tk.Text(top)
+    text_box.pack(expand=True)
+    text_box.insert("end", text)
+    text_box.config(state="disabled")
 
 
 
