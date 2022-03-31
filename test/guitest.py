@@ -3,7 +3,7 @@ import save
 import kanboard1 as kb
 
 def app():
-    items = save.load_all("pickle.dat")
+    items = save.load_all("pickle.dat") # Loads tickets from pickle.dat file, if no file, creates it
     counter = kb.TaskCounter()
     window = tk.Tk()
     window.geometry("1280x720")
@@ -59,6 +59,7 @@ def app():
     row, column = window.grid_size()
     new_entry_btn.grid(row=row, column=column)
 
+    # Button that saves changes to pickle.dat file
     save_btn = tk.Button(window, text="Plz Save", command=save.save_all)
     save_btn.grid(row=row+1, column=column)
 
