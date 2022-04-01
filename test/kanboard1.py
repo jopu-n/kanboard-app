@@ -1,3 +1,7 @@
+# Name:         kanboard1
+# Modified by:  Johannes Natunen, Nico Kranni
+# Description:  Class file for the main program
+
 import datetime
 
 # Empty list for classes
@@ -56,6 +60,7 @@ class ProgramTask(MainTask):
         st += 'Program: ' + str(self.program) + "\n"
         return st
 
+# Task counter class: only used once in the program, keeps count of how many instances of either class is in the program.
 class TaskCounter:
     def __init__(self):
         self.pr_task_count = 0

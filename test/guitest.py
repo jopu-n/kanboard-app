@@ -1,7 +1,12 @@
+# Name:         guitest.py
+# Modified by:  Johannes Natunen, Nico Kranni
+# Description:  A "GUI test" program, though it has turned into the main program file at this point.
+
 import tkinter as tk
 import save
 import kanboard1 as kb
 
+# Main app function for the Kanboard application
 def app():
     items = save.load_all("pickle.dat") # Loads tickets from pickle.dat file, if no file, creates it
     counter = kb.TaskCounter()
@@ -22,7 +27,7 @@ def app():
         kb.data=item
         
 
-    
+    # Button that creates a pop up window for creating a new ticket
     def new_ticket():
         top = tk.Toplevel()
         top.title("New Ticket")
@@ -30,6 +35,7 @@ def app():
         end_date_var = tk.StringVar()
         worker_var = tk.StringVar()
 
+        # Submit button inside the pop up window
         def submit():
             deadline = deadline_var.get()
             end_date = end_date_var.get()
@@ -64,6 +70,7 @@ def app():
         worker_entry.grid(row=2,column=1)
         submit_btn.grid(row=3,column=0)
 
+    # The actual button that appears in the main window
     new_entry_btn = tk.Button(window, text="New Ticket", command=new_ticket)
     row, column = window.grid_size()
     new_entry_btn.grid(row=row, column=column)
@@ -74,6 +81,7 @@ def app():
 
     window.mainloop()
 
+# Function to add a new ticket. 
 def add_ticket(window, counter, ticket):
     info = (
         f"""\
@@ -88,7 +96,7 @@ def add_ticket(window, counter, ticket):
     button = tk.Button(
         window,
         text=info,
-        command=lambda x=ticket: show_info(x),
+        command=lambda x=ticket: show_info(x), # Calls the show_info command when clicked
         height=6,
         width=20,
     )
@@ -99,6 +107,8 @@ def add_ticket(window, counter, ticket):
         pady=10
     )
 
+# Function that shows a ticket's info in a new window. 
+# WIP: The object's status will be changeable in this window.
 def show_info(ticket):
     top = tk.Toplevel()
     top.title("Information")
@@ -118,7 +128,8 @@ def show_info(ticket):
     text_box.config(state="disabled")
 
 
-
+# Function that checks what the ticket type is, and also assigns the tickets their place in the main window
+# WIP: This will be reworked soon as tickets will not be grouped by object types but rather their status
 def check_ticket_type(obj, counter):
     if isinstance(obj, kb.ProgramTask):
         obj.set_kbpos(obj.get_kbpos() + counter.get_pr_task_count())
