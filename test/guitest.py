@@ -99,6 +99,7 @@ def add_ticket(window, counter, ticket):
         window,
         text=info,
         command=lambda x=ticket: show_info(x), # Calls the show_info command when clicked
+        bg="lightgray",
         height=6,
         width=20,
     )
