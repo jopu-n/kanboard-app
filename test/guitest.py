@@ -12,9 +12,10 @@ def app():
     counter = kb.TaskCounter()
     window = tk.Tk()
     window.geometry("1280x720")
+    window.resizable(False, False)
     window.title("Kanboard")
-    tk.Label(window, text="MAIN TASKS",borderwidth=1).grid(row=0,column=0)
-    tk.Label(window, text="PROGRAM TASKS",borderwidth=1).grid(row=0,column=1)
+    tk.Label(window, text="MAIN TASKS",borderwidth=1).grid(row=1,column=0)
+    tk.Label(window, text="PROGRAM TASKS",borderwidth=1).grid(row=1,column=1)
     
     
     for item in items: # Seems like pickle objects have the real objects inside them
@@ -71,13 +72,14 @@ def app():
         submit_btn.grid(row=3,column=0)
 
     # The actual button that appears in the main window
-    new_entry_btn = tk.Button(window, text="New Ticket", command=new_ticket)
-    row, column = window.grid_size()
-    new_entry_btn.grid(row=row, column=column)
+    new_entry_btn = tk.Button(window, text="New Ticket", bg="orange", command=new_ticket)
+    new_entry_btn.grid(row=0, column=0,columnspan=1)
+    new_entry_btn.config(width=20)
 
     # Button that saves changes to pickle.dat file
-    save_btn = tk.Button(window, text="Plz Save", command=save.save_all)
-    save_btn.grid(row=row+1, column=column)
+    save_btn = tk.Button(window, text="Plz Save", bg="lightgreen", command=save.save_all)
+    save_btn.grid(row=0, column=1, columnspan=2)
+    save_btn.config(width=20)
 
     window.mainloop()
 
