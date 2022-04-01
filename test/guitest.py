@@ -71,6 +71,31 @@ def app():
         worker_entry.grid(row=2,column=1)
         submit_btn.grid(row=3,column=0)
 
+ # Button that creates a pop up window for removing a ticket
+    def remove_ticket():
+        top = tk.Toplevel()
+        top.title("Remove Ticket")
+        remove_var = tk.StringVar()
+
+        # Remove button inside the pop up window
+        def delete():
+            remove = remove_var.get()
+            for i in kb.data:
+                if i.ticket_id == int(remove):
+                    kb.data.remove(i)
+
+            remove_var.set("")
+
+        remove_label = tk.Label(top, text="Remove: ")
+        remove_entry = tk.Entry(top, textvariable=remove_var)
+
+        remove_btn = tk.Button(top, text = "Delete", command=delete)
+
+        remove_label.grid(row=0,column=0)
+        remove_entry.grid(row=0,column=1)
+
+        remove_btn.grid(row=3,column=0)
+
     # The actual button that appears in the main window
     new_entry_btn = tk.Button(window, text="New Ticket", bg="orange", command=new_ticket)
     new_entry_btn.grid(row=0, column=0,columnspan=1)
@@ -80,6 +105,11 @@ def app():
     save_btn = tk.Button(window, text="Plz Save", bg="lightgreen", command=save.save_all)
     save_btn.grid(row=0, column=1, columnspan=2)
     save_btn.config(width=20)
+
+    # Button that removes ticket from pickle.dat file
+    remove_ticket_btn = tk.Button(window, text="Remove", bg="red", command=remove_ticket)
+    remove_ticket_btn.grid(row=0, column=3, columnspan=3)
+    remove_ticket_btn.config(width=20)
 
     window.mainloop()
 
