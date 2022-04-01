@@ -11,11 +11,18 @@ def app():
     tk.Label(window, text="MAIN TASKS",borderwidth=1).grid(row=0,column=0)
     tk.Label(window, text="PROGRAM TASKS",borderwidth=1).grid(row=0,column=1)
     
-
+    
     for item in items: # Seems like pickle objects have the real objects inside them
         for ticket in item: # Thus, we have to loop two times
             add_ticket(window, counter, ticket)
+            print("ID: ",ticket.ticket_id)
+            print("Row: ",ticket.kbpos,"\n")
 
+        # Replaces list of classes with new list
+        kb.data=item
+        
+
+    
     def new_ticket():
         top = tk.Toplevel()
         top.title("New Ticket")
@@ -30,10 +37,12 @@ def app():
 
             ticket = kb.MainTask(deadline, end_date, worker)
             add_ticket(window,counter,ticket)
+            print(ticket.kbpos,"\n")
 
             deadline_var.set("")
             end_date_var.set("")
             worker_var.set("")
+            save.save_all()
 
 
         deadline_label = tk.Label(top, text="Deadline: ")

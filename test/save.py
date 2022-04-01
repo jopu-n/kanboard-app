@@ -42,5 +42,4 @@ def load_all(filename):
                     break
 
 
-items = load_all("pickle.dat")
 
