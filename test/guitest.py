@@ -141,7 +141,7 @@ def app():
     window.mainloop()
 
 # Function to add a new ticket. 
-def add_ticket(window, ticket):
+def add_ticket(window, counter, ticket):
     
     try:
         info = (
