@@ -18,7 +18,7 @@ class MainTask:
         self.start_date = datetime.datetime.now()
         self.end_date = end_date
         self.worker = worker
-        self.kbpos = 2 # The position where the object is on the kanboard.
+        #self.kbpos = 2 # The position where the object is on the kanboard.
         data.append(self)
         print(self.ticket_id)
     def __str__(self):
@@ -60,14 +60,14 @@ class ProgramTask(MainTask):
         st += 'Program: ' + str(self.program) + "\n"
         return st
 
-# Task counter class: only used once in the program, keeps count of how many instances of either class is in the program.
-class TaskCounter:
-    def __init__(self):
-        self.pr_task_count = 1
-        self.main_task_count = 1
+# # Task counter class: only used once in the program, keeps count of how many instances of either class is in the program.
+# class TaskCounter:
+#     def __init__(self):
+#         self.pr_task_count = 1
+#         self.main_task_count = 1
 
-    def get_pr_task_count(self): return self.pr_task_count
-    def set_pr_task_count(self, num): self.pr_task_count = num
+#     def get_pr_task_count(self): return self.pr_task_count
+#     def set_pr_task_count(self, num): self.pr_task_count = num
 
-    def get_main_task_count(self): return self.main_task_count
-    def set_main_task_count(self, num): self.main_task_count = num
+#     def get_main_task_count(self): return self.main_task_count
+#     def set_main_task_count(self, num): self.main_task_count = num
