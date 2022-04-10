@@ -9,7 +9,6 @@ import kanboard1 as kb
 # Main app function for the Kanboard application
 def app():
     items = save.load_all("pickle.dat") # Loads tickets from pickle.dat file, if no file, creates it
-    counter = kb.TaskCounter()
     window = tk.Tk()
     window.geometry("1280x720")
     window.resizable(False, False)
@@ -17,7 +16,7 @@ def app():
     tk.Label(window, text="UNCOMPLETED",borderwidth=1).grid(row=1,column=0)
     tk.Label(window, text="IN PROGRESS",borderwidth=1).grid(row=1,column=1)
     tk.Label(window, text="COMPLETED",borderwidth=1).grid(row=1,column=2)
-
+    check_status()
     
     
     for item in items: # Seems like pickle objects have the real objects inside them
@@ -53,7 +52,7 @@ def app():
             status = list_status.index(status_var.get())
 
             ticket = kb.MainTask(deadline, end_date, worker, description, status)
-            add_ticket(window,counter,ticket)
+            add_ticket(window,ticket)
             print(ticket.kbpos,"\n")
             print(status)
 
@@ -63,6 +62,7 @@ def app():
             description_var.set("")
             status_var.set(list_status[0])
             save.save_all()
+            
 
 
         deadline_label = tk.Label(top, text="Deadline: ")
@@ -107,9 +107,10 @@ def app():
         def delete():
             remove = remove_var.get()
             for i in kb.data:
-                if i.ticket_id == int(remove):
+                if i.ticket_id == int(remove): # There's some kind of bug in this, sometimes does not recognize items by id.
+                    window.grid_slaves(row=i.get_kbpos(), column=i.get_status())[0].destroy()
                     kb.data.remove(i)
-                    window.grid_slaves(row=i.ticket_id+1, column=0)[0].destroy()
+                    
 
             remove_var.set("")
 
@@ -117,7 +118,7 @@ def app():
         remove_entry = tk.Entry(top, textvariable=remove_var)
 
         remove_btn = tk.Button(top, text = "Delete", command=delete)
-
+        check_status()
         remove_label.grid(row=0,column=0)
         remove_entry.grid(row=0,column=1)
 
@@ -141,7 +142,7 @@ def app():
     window.mainloop()
 
 # Function to add a new ticket. 
-def add_ticket(window, counter, ticket):
+def add_ticket(window, ticket):
     
     try:
         info = (
@@ -173,6 +174,7 @@ def add_ticket(window, counter, ticket):
         height=6,
         width=20,
     )
+    check_status()
     button.grid(
         column=ticket.get_status(),
         row=ticket.get_kbpos(),
@@ -215,9 +217,19 @@ def show_info(ticket):
 
 
 # Function that checks what the ticket type is, and also assigns the tickets their place in the main window
-# WIP: This will be reworked soon as tickets will not be grouped by object types but rather their status
 
-def set_ticket_pos(obj, counter):
-    pass
+def check_status():
+    uncompleted = []
+    in_progress = []
+    done = []
+
+    for item in kb.data:
+        if item.get_status() == 0: uncompleted.append(item)
+        elif item.get_status() == 1: in_progress.append(item)
+        elif item.get_status() == 2: done.append(item)
+
+    for list in [uncompleted,in_progress,done]:
+        for item in list:
+            item.set_kbpos(item.get_kbpos() + list.index(item))
 
 app()
