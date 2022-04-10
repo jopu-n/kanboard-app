@@ -14,16 +14,16 @@ def app():
     window.geometry("1280x720")
     window.resizable(False, False)
     window.title("Kanboard")
-    tk.Label(window, text="YET TO START",borderwidth=1).grid(row=1,column=0)
+    tk.Label(window, text="UNCOMPLETED",borderwidth=1).grid(row=1,column=0)
     tk.Label(window, text="IN PROGRESS",borderwidth=1).grid(row=1,column=1)
-    tk.Label(window, text="DONE",borderwidth=1).grid(row=1,column=2)
+    tk.Label(window, text="COMPLETED",borderwidth=1).grid(row=1,column=2)
+
     
     
     for item in items: # Seems like pickle objects have the real objects inside them
         for ticket in item: # Thus, we have to loop two times
-            add_ticket(window, counter, ticket)
+            add_ticket(window, ticket)
             print("ID: ",ticket.ticket_id)
-            print("Row: ",ticket.kbpos,"\n")
 
         # Replaces list of classes with new list
         kb.data=item
@@ -109,6 +109,7 @@ def app():
             for i in kb.data:
                 if i.ticket_id == int(remove):
                     kb.data.remove(i)
+                    window.grid_slaves(row=i.ticket_id+1, column=0)[0].destroy()
 
             remove_var.set("")
 
@@ -124,24 +125,37 @@ def app():
 
     # The actual button that appears in the main window
     new_entry_btn = tk.Button(window, text="New Ticket", bg="orange", command=new_ticket)
-    new_entry_btn.grid(row=0, column=0,columnspan=1)
+    new_entry_btn.grid(row=0, column=0)
     new_entry_btn.config(width=20)
 
     # Button that saves changes to pickle.dat file
     save_btn = tk.Button(window, text="Plz Save", bg="lightgreen", command=save.save_all)
-    save_btn.grid(row=0, column=1, columnspan=2)
+    save_btn.grid(row=0, column=1)
     save_btn.config(width=20)
 
     # Button that removes ticket from pickle.dat file
     remove_ticket_btn = tk.Button(window, text="Remove", bg="red", command=remove_ticket)
-    remove_ticket_btn.grid(row=0, column=3, columnspan=3)
+    remove_ticket_btn.grid(row=0, column=2)
     remove_ticket_btn.config(width=20)
 
     window.mainloop()
 
 # Function to add a new ticket. 
-def add_ticket(window, counter, ticket):
-    info = (
+def add_ticket(window, ticket):
+    
+    try:
+        info = (
+            f"""\
+            Ticket id: {str(ticket.ticket_id)}\
+            \n  Deadline: {ticket.deadline}\
+            \n  Start date: {str(ticket.start_date.strftime("%x"))}\
+            \n  End date: {ticket.end_date}\
+            \n  Worker: {ticket.worker}\
+            \n  Program: {ticket.program}\
+            """
+        )
+    except AttributeError:
+        info = (
         f"""\
         Ticket id: {str(ticket.get_ticket_id())}\
         \n  Deadline: {ticket.get_deadline()}\
@@ -172,9 +186,21 @@ def show_info(ticket):
     top = tk.Toplevel()
     top.title("Information")
     top.geometry("300x200")
-    text = (
-        f""" \
-        \n  Ticket id: {str(ticket.ticket_id)}\
+    try:
+        text = (
+            f"""\
+            Ticket id: {str(ticket.ticket_id)}\
+            \n  Deadline: {ticket.deadline}\
+            \n  Start date: {str(ticket.start_date.strftime("%x"))}\
+            \n  End date: {ticket.end_date}\
+            \n  Worker: {ticket.worker}\
+            \n  Program: {ticket.program}\
+            """
+        )
+    except AttributeError:
+        text = (
+        f"""\
+        Ticket id: {str(ticket.ticket_id)}\
         \n  Deadline: {ticket.deadline}\
         \n  Start date: {str(ticket.start_date.strftime("%x"))}\
         \n  End date: {ticket.end_date}\

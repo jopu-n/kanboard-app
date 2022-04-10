@@ -13,6 +13,7 @@ class MainTask:
         self.end_date = end_date
         self.worker = worker
         data.append(self)
+
     def __str__(self):
         return "\nTicket ID: {0}\nStart date is: {1}\nDeadline is: {2}\nEnd Date is: {3}\nWho is doing the ticket: {4}\n".format(self.ticket_id, self.start_date.strftime("%x"), self.deadline, self.end_date, self.worker)
 

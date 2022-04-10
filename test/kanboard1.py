@@ -73,9 +73,7 @@ class TaskCounter:
     def __init__(self):
         self.pr_task_count = 1
         self.main_task_count = 1
-
     def get_pr_task_count(self): return self.pr_task_count
     def set_pr_task_count(self, num): self.pr_task_count = num
-
     def get_main_task_count(self): return self.main_task_count
     def set_main_task_count(self, num): self.main_task_count = num
