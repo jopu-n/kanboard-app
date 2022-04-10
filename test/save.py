@@ -1,15 +1,6 @@
 import kanboard1 as kb
 import pickle, sys
 
-test = kb.MainTask("Tomorrow", "Yesterday","Nico")
-test2 = kb.ProgramTask("Tomorrow","Yesterday","Nico","Facebook")
-
-test3 = kb.MainTask("Tomorrow", "Yesterday","Nico")
-test4 = kb.ProgramTask("Tomorrow","Yesterday","Nico","Facebook")
-tes = kb.MainTask("Tomorrow", "Yesterday","Nico")
-test5 = kb.ProgramTask("Tomorrow","Yesterday","Nico","Facebook")
-
-
 
 # Creates and dumps data into pickle.dat file
 def save_all():

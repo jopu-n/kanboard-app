@@ -1,0 +1,7 @@
+test = kb.MainTask("Tomorrow", "Yesterday","Nico","test",0)
+test2 = kb.ProgramTask("Tomorrow","Yesterday","Nico","Facebook","test",1)
+
+test3 = kb.MainTask("Tomorrow", "Yesterday","Nico","test",0)
+test4 = kb.ProgramTask("Tomorrow","Yesterday","Nico","Facebook","test",1)
+tes = kb.MainTask("Tomorrow", "Yesterday","Nico","test",0)
+test5 = kb.ProgramTask("Tomorrow","Yesterday","Nico","Facebook","test",1)

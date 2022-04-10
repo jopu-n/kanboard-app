@@ -10,7 +10,7 @@ class MainTask:
 
 
 
-    def __init__(self, deadline, end_date, worker):
+    def __init__(self, deadline, end_date, worker, description, status):
         self.ticket_id=1
         for i in data:
             self.ticket_id+=1
@@ -18,7 +18,9 @@ class MainTask:
         self.start_date = datetime.datetime.now()
         self.end_date = end_date
         self.worker = worker
-        self.kbpos = 2 # The position where the object is on the kanboard.
+        self.description = description
+        self.status = status
+        self.kbpos = self.ticket_id + 1  # The position where the object is on the kanboard.
         data.append(self)
         print(self.ticket_id)
     def __str__(self):
@@ -38,14 +40,20 @@ class MainTask:
     def get_worker(self): return self.worker
     def set_worker(self, worker): self.worker = worker
 
+    def get_description(self): return self.description
+    def set_description(self, description): self.description = description
+
+    def get_status(self): return self.status
+    def set_status(self, status): self.status = status
+
     def get_kbpos(self): return self.kbpos
     def set_kbpos(self, pos): self.kbpos = pos
 
     
 
 class ProgramTask(MainTask):
-    def __init__(self, deadline, end_date, worker, program):
-        super().__init__(deadline, end_date, worker)
+    def __init__(self, deadline, end_date, worker, description, status, program):
+        super().__init__(deadline, end_date, worker, description, status)
         self.program=program
         self.kbpos = 2
 
