@@ -16,7 +16,6 @@ def app():
     tk.Label(window, text="UNCOMPLETED",borderwidth=1).grid(row=1,column=0)
     tk.Label(window, text="IN PROGRESS",borderwidth=1).grid(row=1,column=1)
     tk.Label(window, text="COMPLETED",borderwidth=1).grid(row=1,column=2)
-    check_status()
     
     
     for item in items: # Seems like pickle objects have the real objects inside them
@@ -187,7 +186,7 @@ def add_ticket(window, ticket):
 def show_info(ticket):
     top = tk.Toplevel()
     top.title("Information")
-    top.geometry("300x200")
+    top.geometry("500x450")
     try:
         text = (
             f"""\
@@ -208,12 +207,38 @@ def show_info(ticket):
         \n  End date: {ticket.end_date}\
         \n  Worker: {ticket.worker}\
         \n  Description: {ticket.get_description()}
+        \n  Status: {ticket.get_status()}
         """
     )
+
+    
     text_box = tk.Text(top)
-    text_box.pack(expand=True)
+    text_box.pack()
     text_box.insert("end", text)
     text_box.config(state="disabled")
+
+
+    # Dropdown settings for status
+    status_var = tk.StringVar()
+    list_status = ["Yet to start","In progress","Done"]
+    status_var.set(list_status[ticket.get_status()])
+    
+    
+    # Dropdown box with status settings
+    status_label = tk.Label(top, text="Status: ")
+    status_menu = tk.OptionMenu(top, status_var, *list_status)
+    status_label.pack()
+    status_menu.pack()
+
+    def on_closing():
+        ticket.set_status(list_status.index(status_var.get()))
+        check_status()
+        save.save_all()
+        top.destroy()
+
+    top.protocol("WM_DELETE_WINDOW", on_closing)
+
+    
 
 
 # Function that checks what the ticket type is, and also assigns the tickets their place in the main window
@@ -231,5 +256,6 @@ def check_status():
     for list in [uncompleted,in_progress,done]:
         for item in list:
             item.set_kbpos(item.get_kbpos() + list.index(item))
+    
 
 app()
