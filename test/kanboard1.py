@@ -22,7 +22,6 @@ class MainTask:
         self.status = status
         self.kbpos = 2  # The position where the object is on the kanboard.
         data.append(self)
-        print(self.ticket_id)
     def __str__(self):
         return "\nTicket ID: {0}\nStart date is: {1}\nDeadline is: {2}\nEnd Date is: {3}\nWho is doing the ticket: {4}\n".format(self.ticket_id, self.start_date.strftime("%x"), self.deadline, self.end_date, self.worker)
 

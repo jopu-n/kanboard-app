@@ -6,6 +6,8 @@ import tkinter as tk
 import save
 import kanboard1 as kb
 
+
+
 # Main app function for the Kanboard application
 def app():
     items = save.load_all("pickle.dat") # Loads tickets from pickle.dat file, if no file, creates it
@@ -21,7 +23,6 @@ def app():
     for item in items: # Seems like pickle objects have the real objects inside them
         for ticket in item: # Thus, we have to loop two times
             add_ticket(window, ticket)
-            print("ID: ",ticket.ticket_id)
 
         # Replaces list of classes with new list
         kb.data=item
@@ -52,8 +53,7 @@ def app():
 
             ticket = kb.MainTask(deadline, end_date, worker, description, status)
             add_ticket(window,ticket)
-            print(ticket.kbpos,"\n")
-            print(status)
+
 
             deadline_var.set("")
             end_date_var.set("")
@@ -254,8 +254,11 @@ def check_status():
         elif item.get_status() == 2: done.append(item)
 
     for list in [uncompleted,in_progress,done]:
+        x=0
         for item in list:
-            item.set_kbpos(item.get_kbpos() + list.index(item))
-    
+            item.set_kbpos(2+x)
+            x+=1
+
+         
 
 app()
