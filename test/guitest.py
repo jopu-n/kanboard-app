@@ -12,7 +12,7 @@ import kanboard1 as kb
 def app():
     items = save.load_all("pickle.dat") # Loads tickets from pickle.dat file, if no file, creates it
     window = tk.Tk()
-    window.geometry("1280x720")
+    window.geometry("900x600")
     window.resizable(False, False)
     window.title("Kanboard")
     tk.Label(window, text="UNCOMPLETED",borderwidth=1).grid(row=1,column=0)
@@ -125,17 +125,17 @@ def app():
 
     # The actual button that appears in the main window
     new_entry_btn = tk.Button(window, text="New Ticket", bg="orange", command=new_ticket)
-    new_entry_btn.grid(row=0, column=0)
+    new_entry_btn.grid(row=0, column=0,padx=10,pady=10)
     new_entry_btn.config(width=20)
 
     # Button that saves changes to pickle.dat file
     save_btn = tk.Button(window, text="Plz Save", bg="lightgreen", command=save.save_all)
-    save_btn.grid(row=0, column=1)
+    save_btn.grid(row=0, column=1,padx=10,pady=10)
     save_btn.config(width=20)
 
     # Button that removes ticket from pickle.dat file
     remove_ticket_btn = tk.Button(window, text="Remove", bg="red", command=remove_ticket)
-    remove_ticket_btn.grid(row=0, column=2)
+    remove_ticket_btn.grid(row=0, column=2,padx=10,pady=10)
     remove_ticket_btn.config(width=20)
 
     window.mainloop()
