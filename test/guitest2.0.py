@@ -1,16 +1,17 @@
 import tkinter as tk
+import tkinter.ttk as ttk
 import save
 import kanboard1 as kb
 def app():
     root = tk.Tk()
     root.grid_rowconfigure(0, weight=1)
     root.columnconfigure(0, weight=1)
-    root.geometry("900x600")
+    root.geometry("532x600")
     root.resizable(False, False)
     root.title("Kanboard")
     items = save.load_all("pickle.dat") # Loads tickets from pickle.dat file, if no file, creates it
 
-    frame_main = tk.Frame(root, bg="lightgray")
+    frame_main = tk.Frame(root, bg="#f5f5f5")
     frame_main.grid(sticky='news')
 
     def new_ticket():
@@ -113,31 +114,31 @@ def app():
 
 
       # The actual button that appears in the main window
-    new_entry_btn = tk.Button(frame_main, text="New Ticket", bg="orange", command=new_ticket)
+    new_entry_btn = tk.Button(frame_main, text="New Ticket", bg="#dbdbdb", command=new_ticket)
     new_entry_btn.grid(row=0, column=0,padx=10,pady=10)
     new_entry_btn.config(width=20)
 
     # Button that saves changes to pickle.dat file
-    save_btn = tk.Button(frame_main, text="Plz Save", bg="lightgreen", command=save.save_all)
+    save_btn = tk.Button(frame_main, text="Plz Save", bg="#dbdbdb", command=save.save_all)
     save_btn.grid(row=0, column=1,padx=10,pady=10)
     save_btn.config(width=20)
 
     # Button that removes ticket from pickle.dat file
-    remove_ticket_btn = tk.Button(frame_main, text="Remove", bg="red", command=remove_ticket)
+    remove_ticket_btn = tk.Button(frame_main, text="Remove", bg="#dbdbdb", command=remove_ticket)
     remove_ticket_btn.grid(row=0, column=2,padx=10,pady=10)
     remove_ticket_btn.config(width=20)
 
 
-    label1 = tk.Label(frame_main, text="UNCOMPLETED", fg="green")
-    label1.grid(row=1, column=0, padx=10,pady=10, sticky='nw')
+    label1 = tk.Label(frame_main, text="Uncompleted", fg="black")
+    label1.grid(row=1, column=0, padx=10,pady=10, sticky='we')
     label1.config(width=20)
 
-    label2 = tk.Label(frame_main, text="In Progress", fg="blue")
-    label2.grid(row=1, column=1, padx=10,pady=10, sticky='nw')
+    label2 = tk.Label(frame_main, text="In Progress", fg="black")
+    label2.grid(row=1, column=1, padx=10,pady=10, sticky='we')
     label2.config(width=20)
 
-    label3 = tk.Label(frame_main, text="Completed", fg="red")
-    label3.grid(row=1, column=2, padx=10,pady=10, sticky='nw')
+    label3 = tk.Label(frame_main, text="Completed", fg="black")
+    label3.grid(row=1, column=2, padx=10,pady=10, sticky='we')
     label3.config(width=20)
 
     # Create a frame for the canvas with non-zero row&column weights
@@ -150,7 +151,7 @@ def app():
 
 
     # Add a canvas in that frame
-    canvas1 = tk.Canvas(frame_canvas1, bg="yellow")
+    canvas1 = tk.Canvas(frame_canvas1, bg="white")
     canvas1.grid(row=0, column=0, sticky="news")
 
 
@@ -162,7 +163,7 @@ def app():
     frame_canvas2.grid_propagate(False)
 
     # Add a canvas in that frame
-    canvas2 = tk.Canvas(frame_canvas2, bg="red")
+    canvas2 = tk.Canvas(frame_canvas2, bg="white")
     canvas2.grid(row=0, column=0, sticky="news")
 
     # Create a frame for the canvas with non-zero row&column weights
@@ -173,7 +174,7 @@ def app():
     frame_canvas3.grid_propagate(False)
 
     # Add a canvas in that frame
-    canvas3 = tk.Canvas(frame_canvas3, bg="lightgreen")
+    canvas3 = tk.Canvas(frame_canvas3, bg="white")
     canvas3.grid(row=0, column=0, sticky="news")
 
 
@@ -193,13 +194,13 @@ def app():
     canvas3.configure(yscrollcommand=vsb3.set)
 
     # Create a frame to contain the buttons
-    frame_buttons1 = tk.Frame(canvas1, bg="red")
+    frame_buttons1 = tk.Frame(canvas1, bg="#7d7d7d")
     canvas1.create_window((0, 0), window=frame_buttons1, anchor='nw')
 
-    frame_buttons2 = tk.Frame(canvas2, bg="yellow")
+    frame_buttons2 = tk.Frame(canvas2, bg="#8dd8eb")
     canvas2.create_window((0, 0), window=frame_buttons2, anchor='nw')
 
-    frame_buttons3 = tk.Frame(canvas3, bg="green")
+    frame_buttons3 = tk.Frame(canvas3, bg="#6fde74")
     canvas3.create_window((0, 0), window=frame_buttons3, anchor='nw')
 
 
@@ -228,31 +229,34 @@ def app():
         )
         check_status()
         if ticket.get_status()==0:
-            button = tk.Button(
+            button = ttk.Button(
             frame_buttons1,
             text=info,
             command=lambda x=ticket: show_info(x), # Calls the show_info command when clicked
-            bg="lightgray",
-            height=6,
+            #bg="#ededed",
+            #height=6,
             width=20,
+            style='Fun.TButton',
         )
         elif ticket.get_status()==1:
-            button = tk.Button(
+            button = ttk.Button(
             frame_buttons2,
             text=info,
             command=lambda x=ticket: show_info(x), # Calls the show_info command when clicked
-            bg="lightgray",
-            height=6,
+            #bg="#ededed",
+            #height=6,
             width=20,
+            style='Fun.TButton',
         )
         else:
-            button = tk.Button(
+            button = ttk.Button(
             frame_buttons3,
             text=info,
             command=lambda x=ticket: show_info(x), # Calls the show_info command when clicked
-            bg="lightgray",
-            height=6,
+            #bg="#ededed",
+            #height=6,
             width=20,
+            style='Fun.TButton',
         )
         
         button.grid(
@@ -263,20 +267,95 @@ def app():
         )
 
         frame_buttons1.update_idletasks()
-        frame_canvas1.config(width=190 ,height=500)
+        frame_canvas1.config(width=170 ,height=500)
 
         frame_buttons2.update_idletasks()
-        frame_canvas2.config(width=190 ,height=500)
+        frame_canvas2.config(width=170 ,height=500)
 
         frame_buttons3.update_idletasks()
-        frame_canvas3.config(width=190 ,height=500)
+        frame_canvas3.config(width=170 ,height=500)
 
         
 
         canvas1.config(scrollregion=canvas1.bbox("all"))
         canvas2.config(scrollregion=canvas2.bbox("all"))
         canvas3.config(scrollregion=canvas3.bbox("all"))
+    
+    def show_info(ticket):
+        top = tk.Toplevel()
+        top.title("Information")
+        top.geometry("500x450")
+        try:
+            text = (
+                f"""\
+                Ticket id: {str(ticket.ticket_id)}\
+                \n  Deadline: {ticket.deadline}\
+                \n  Start date: {str(ticket.start_date.strftime("%x"))}\
+                \n  End date: {ticket.end_date}\
+                \n  Worker: {ticket.worker}\
+                \n  Program: {ticket.program}\
+                """
+            )
+        except AttributeError:
+            text = (
+            f"""\
+            Ticket id: {str(ticket.ticket_id)}\
+            \n  Deadline: {ticket.deadline}\
+            \n  Start date: {str(ticket.start_date.strftime("%x"))}\
+            \n  End date: {ticket.end_date}\
+            \n  Worker: {ticket.worker}\
+            \n  Description: {ticket.get_description()}
+            \n  Status: {ticket.get_status()}
+            """
+        )
 
+        
+        text_box = tk.Text(top)
+        text_box.pack()
+        text_box.insert("end", text)
+        text_box.config(state="disabled")
+
+
+        # Dropdown settings for status
+        status_var = tk.StringVar()
+        list_status = ["Yet to start","In progress","Done"]
+        status_var.set(list_status[ticket.get_status()])
+        
+        
+        # Dropdown box with status settings
+        status_label = tk.Label(top, text="Status: ")
+        status_menu = tk.OptionMenu(top, status_var, *list_status)
+        status_label.pack()
+        status_menu.pack()
+
+        def on_closing():
+            print("TRIGGER")
+            ticket.set_status(list_status.index(status_var.get()))
+            check_status()
+            save.save_all()
+            
+            
+            
+            top.destroy()
+
+
+        top.protocol("WM_DELETE_WINDOW", on_closing)
+
+    def check_status():
+        uncompleted = []
+        in_progress = []
+        done = []
+
+        for item in kb.data:
+            if item.get_status() == 0: uncompleted.append(item)
+            elif item.get_status() == 1: in_progress.append(item)
+            elif item.get_status() == 2: done.append(item)
+
+        for list in [uncompleted,in_progress,done]:
+            x=0
+            for item in list:
+                item.set_kbpos(2+x)
+                x+=1
 
 
 
@@ -291,13 +370,13 @@ def app():
 
 
     frame_buttons1.update_idletasks()
-    frame_canvas1.config(width=190 ,height=500)
+    frame_canvas1.config(width=170 ,height=500)
 
     frame_buttons2.update_idletasks()
-    frame_canvas2.config(width=190 ,height=500)
+    frame_canvas2.config(width=170 ,height=500)
 
     frame_buttons3.update_idletasks()
-    frame_canvas3.config(width=190 ,height=500)
+    frame_canvas3.config(width=170 ,height=500)
     # Set the canvas scrolling region
 
     
@@ -305,82 +384,14 @@ def app():
     canvas1.config(scrollregion=canvas1.bbox("all"))
     canvas2.config(scrollregion=canvas2.bbox("all"))
     canvas3.config(scrollregion=canvas3.bbox("all"))
+
+
+    
     
     # Launch the GUI
     root.mainloop()
 
 
 
-def show_info(ticket):
-    top = tk.Toplevel()
-    top.title("Information")
-    top.geometry("500x450")
-    try:
-        text = (
-            f"""\
-            Ticket id: {str(ticket.ticket_id)}\
-            \n  Deadline: {ticket.deadline}\
-            \n  Start date: {str(ticket.start_date.strftime("%x"))}\
-            \n  End date: {ticket.end_date}\
-            \n  Worker: {ticket.worker}\
-            \n  Program: {ticket.program}\
-            """
-        )
-    except AttributeError:
-        text = (
-        f"""\
-        Ticket id: {str(ticket.ticket_id)}\
-        \n  Deadline: {ticket.deadline}\
-        \n  Start date: {str(ticket.start_date.strftime("%x"))}\
-        \n  End date: {ticket.end_date}\
-        \n  Worker: {ticket.worker}\
-        \n  Description: {ticket.get_description()}
-        \n  Status: {ticket.get_status()}
-        """
-    )
 
-    
-    text_box = tk.Text(top)
-    text_box.pack()
-    text_box.insert("end", text)
-    text_box.config(state="disabled")
-
-
-    # Dropdown settings for status
-    status_var = tk.StringVar()
-    list_status = ["Yet to start","In progress","Done"]
-    status_var.set(list_status[ticket.get_status()])
-    
-    
-    # Dropdown box with status settings
-    status_label = tk.Label(top, text="Status: ")
-    status_menu = tk.OptionMenu(top, status_var, *list_status)
-    status_label.pack()
-    status_menu.pack()
-
-    def on_closing():
-        ticket.set_status(list_status.index(status_var.get()))
-        check_status()
-        save.save_all()
-        top.destroy()
-
-
-    top.protocol("WM_DELETE_WINDOW", on_closing)
-
-
-def check_status():
-    uncompleted = []
-    in_progress = []
-    done = []
-
-    for item in kb.data:
-        if item.get_status() == 0: uncompleted.append(item)
-        elif item.get_status() == 1: in_progress.append(item)
-        elif item.get_status() == 2: done.append(item)
-
-    for list in [uncompleted,in_progress,done]:
-        x=0
-        for item in list:
-            item.set_kbpos(2+x)
-            x+=1
 app()
