@@ -179,7 +179,7 @@ def app():
 
     # Link a scrollbar to the canvas
     vsb1 = tk.Scrollbar(frame_canvas1, orient="vertical", command=canvas1.yview)
-    vsb1.grid(row=0, column=1, sticky='ns')
+    vsb1.grid(row=0, column=1, sticky='nsne')
     canvas1.configure(yscrollcommand=vsb1.set)
 
     # Link a scrollbar to the canvas
@@ -241,7 +241,21 @@ def app():
             padx=10,
             pady=10
         )
+        frame_buttons1.update_idletasks()
+        frame_canvas1.config(width=190 ,height=500)
 
+        frame_buttons2.update_idletasks()
+        frame_canvas2.config(width=190 ,height=500)
+
+        frame_buttons3.update_idletasks()
+        frame_canvas3.config(width=190 ,height=500)
+        # Set the canvas scrolling region
+
+        
+
+        canvas1.config(scrollregion=canvas1.bbox("all"))
+        canvas2.config(scrollregion=canvas2.bbox("all"))
+        canvas3.config(scrollregion=canvas3.bbox("all"))
     teksti=("Hölöm")
     nappula=tk.Button(frame_buttons3, text=teksti, bg="pink",height=6,width=20)
     nappula.grid(
@@ -260,6 +274,7 @@ def app():
     )
 
 
+
     # Add 9-by-5 buttons to the frame
     for item in items: # Seems like pickle objects have the real objects inside them
         for ticket in item: # Thus, we have to loop two times
@@ -267,6 +282,7 @@ def app():
 
         # Replaces list of classes with new list
         kb.data=item
+
 
 
     frame_buttons1.update_idletasks()
@@ -278,9 +294,14 @@ def app():
     frame_buttons3.update_idletasks()
     frame_canvas3.config(width=190 ,height=500)
     # Set the canvas scrolling region
+
+    
+
     canvas1.config(scrollregion=canvas1.bbox("all"))
     canvas2.config(scrollregion=canvas2.bbox("all"))
     canvas3.config(scrollregion=canvas3.bbox("all"))
+    
+
 
 
     
@@ -348,6 +369,7 @@ def show_info(ticket):
 
 
 def check_status():
+    items = save.load_all("pickle.dat") # Loads tickets from pickle.dat file, if no file, creates it
     uncompleted = []
     in_progress = []
     done = []
