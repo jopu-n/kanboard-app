@@ -163,7 +163,7 @@ def app():
 
     # Add a canvas in that frame
     canvas2 = tk.Canvas(frame_canvas2, bg="red")
-    canvas2.grid(row=0, column=1, sticky="news")
+    canvas2.grid(row=0, column=0, sticky="news")
 
     # Create a frame for the canvas with non-zero row&column weights
     frame_canvas3 = tk.Frame(frame_main)
@@ -174,12 +174,12 @@ def app():
 
     # Add a canvas in that frame
     canvas3 = tk.Canvas(frame_canvas3, bg="lightgreen")
-    canvas3.grid(row=0, column=2, sticky="news")
+    canvas3.grid(row=0, column=0, sticky="news")
 
 
     # Link a scrollbar to the canvas
     vsb1 = tk.Scrollbar(frame_canvas1, orient="vertical", command=canvas1.yview)
-    vsb1.grid(row=0, column=1, sticky='nsne')
+    vsb1.grid(row=0, column=1, sticky='news')
     canvas1.configure(yscrollcommand=vsb1.set)
 
     # Link a scrollbar to the canvas
@@ -226,7 +226,9 @@ def app():
             \n  Worker: {ticket.get_worker()}\
             """
         )
-        button = tk.Button(
+        check_status()
+        if ticket.get_status()==0:
+            button = tk.Button(
             frame_buttons1,
             text=info,
             command=lambda x=ticket: show_info(x), # Calls the show_info command when clicked
@@ -234,13 +236,32 @@ def app():
             height=6,
             width=20,
         )
-        check_status()
+        elif ticket.get_status()==1:
+            button = tk.Button(
+            frame_buttons2,
+            text=info,
+            command=lambda x=ticket: show_info(x), # Calls the show_info command when clicked
+            bg="lightgray",
+            height=6,
+            width=20,
+        )
+        else:
+            button = tk.Button(
+            frame_buttons3,
+            text=info,
+            command=lambda x=ticket: show_info(x), # Calls the show_info command when clicked
+            bg="lightgray",
+            height=6,
+            width=20,
+        )
+        
         button.grid(
             column=0,
             row=ticket.get_kbpos(),
             padx=10,
             pady=10
         )
+
         frame_buttons1.update_idletasks()
         frame_canvas1.config(width=190 ,height=500)
 
@@ -249,29 +270,13 @@ def app():
 
         frame_buttons3.update_idletasks()
         frame_canvas3.config(width=190 ,height=500)
-        # Set the canvas scrolling region
 
         
 
         canvas1.config(scrollregion=canvas1.bbox("all"))
         canvas2.config(scrollregion=canvas2.bbox("all"))
         canvas3.config(scrollregion=canvas3.bbox("all"))
-    teksti=("Hölöm")
-    nappula=tk.Button(frame_buttons3, text=teksti, bg="pink",height=6,width=20)
-    nappula.grid(
-        column=1,
-        row=1,
-        padx=10,
-        pady=10
-    )
 
-    nappula1=tk.Button(frame_buttons2, text=teksti, bg="pink",height=6,width=20)
-    nappula1.grid(
-        column=1,
-        row=1,
-        padx=10,
-        pady=10
-    )
 
 
 
@@ -301,12 +306,6 @@ def app():
     canvas2.config(scrollregion=canvas2.bbox("all"))
     canvas3.config(scrollregion=canvas3.bbox("all"))
     
-
-
-
-    
-
-
     # Launch the GUI
     root.mainloop()
 
@@ -365,11 +364,11 @@ def show_info(ticket):
         save.save_all()
         top.destroy()
 
+
     top.protocol("WM_DELETE_WINDOW", on_closing)
 
 
 def check_status():
-    items = save.load_all("pickle.dat") # Loads tickets from pickle.dat file, if no file, creates it
     uncompleted = []
     in_progress = []
     done = []
@@ -384,5 +383,4 @@ def check_status():
         for item in list:
             item.set_kbpos(2+x)
             x+=1
-
 app()

@@ -180,6 +180,7 @@ def add_ticket(window, ticket):
         padx=10,
         pady=10
     )
+    print(ticket.get_status())
 
 # Function that shows a ticket's info in a new window. 
 # WIP: The object's status will be changeable in this window.
