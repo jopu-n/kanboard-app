@@ -19,15 +19,41 @@ def app():
 
     frame_main = tk.Frame(root, bg='#f5f5f5')
     frame_main.grid(sticky='news')
+    
+    def ticket_choice():
+        choice_window = tk.Toplevel()
+        choice_window.geometry("200x50")
+        choice_window.title("Choose ticket type")
+        ticket_types = ["Main Task","Program Task"]
+        for ticket_type in ticket_types:
+            choice_button = ttk.Button(
+                choice_window,
+                text=ticket_type,
+                command=lambda x=ticket_types.index(ticket_type): after_choice(x), # Calls the new_ticket command when clicked
+                #bg='#ededed',
+                # height=50,
+                width=100,
+                style='Fun.TButton',
+            )
+            choice_button.pack()
+        
+        def after_choice(num):
+            new_ticket(num)
+            choice_window.destroy()
 
-    def new_ticket():
+
+    # New ticket function.
+    # with ticket_type_num we will define if the user wants to make a main or program task.
+    def new_ticket(ticket_type_num):
+
         top = tk.Toplevel()
-        top.geometry('250x150')
+        top.geometry('250x170')
         top.title('New Ticket')
         deadline_var = tk.StringVar()
         end_date_var = tk.StringVar()
         worker_var = tk.StringVar()
         description_var = tk.StringVar()
+        program_var = tk.StringVar()
         
         # Dropdown settings for status
         status_var = tk.StringVar()
@@ -41,15 +67,22 @@ def app():
             worker = worker_var.get()
             description = description_var.get()
             status = list_status.index(status_var.get())
+            program = program_var.get()
+            
 
-            ticket = kb.MainTask(deadline, end_date, worker, description, status)
-            add_ticket(frame_buttons1,ticket)
+            if ticket_type_num == 0:
+                ticket = kb.MainTask(deadline, end_date, worker, description, status)
+                add_ticket(frame_buttons1,ticket)
 
+            elif ticket_type_num == 1:
+                ticket = kb.ProgramTask(deadline, end_date, worker, description, status, program)
+                add_ticket(frame_buttons1,ticket)
 
             deadline_var.set('')
             end_date_var.set('')
             worker_var.set('')
             description_var.set('')
+            program_var.set('')
             status_var.set(list_status[0])
             save.save_all()
             
@@ -67,6 +100,10 @@ def app():
         description_label = tk.Label(top, text='Description: ')
         description_entry = tk.Entry(top, textvariable=description_var)
 
+        if ticket_type_num == 1:
+            program_label = tk.Label(top, text="Program: ")
+            program_entry = tk.Entry(top, textvariable=program_var)
+
         # Dropdown box with status settings
         status_label = tk.Label(top, text='Status: ')
         status_menu = tk.OptionMenu(top, status_var, *list_status)
@@ -82,9 +119,16 @@ def app():
         worker_entry.grid(row=2,column=1)
         description_label.grid(row=3,column=0)
         description_entry.grid(row=3,column=1)
-        status_label.grid(row=4,column=0)
-        status_menu.grid(row=4,column=1)
-        submit_btn.grid(row=5,column=0)
+        if ticket_type_num == 0:
+            status_label.grid(row=4,column=0)
+            status_menu.grid(row=4,column=1)
+            submit_btn.grid(row=5,column=0)
+        elif ticket_type_num == 1:
+            program_label.grid(row=4,column=0)
+            program_entry.grid(row=4,column=1)
+            status_label.grid(row=5,column=0)
+            status_menu.grid(row=5,column=1)
+            submit_btn.grid(row=6,column=0)
         
     def remove_ticket():
         top = tk.Toplevel()
@@ -118,7 +162,7 @@ def app():
 
 
     # The actual button that appears in the main window
-    new_entry_btn = tk.Button(frame_main, text='New Ticket', bg='#dbdbdb', command=new_ticket)
+    new_entry_btn = tk.Button(frame_main, text='New Ticket', bg='#dbdbdb', command=ticket_choice)
     new_entry_btn.grid(row=0, column=0,padx=10,pady=10)
     new_entry_btn.config(width=20)
 
