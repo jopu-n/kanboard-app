@@ -66,7 +66,7 @@ def app():
         
         # Dropdown settings for status
         status_var = tk.StringVar()
-        list_status = ['Yet to start','In progress','Done']
+        list_status = ['Uncompleted','In progress','Completed']
         status_var.set(list_status[0])
 
         # Submit button inside the pop up window
@@ -399,6 +399,9 @@ def app():
         top = tk.Toplevel() # The Toplevel class is a new window which can be created from the main window
         top.title('Information')
         top.geometry('500x450')
+
+        # List of status types, status number works as an index
+        list_status = ['Uncompleted','In progress','Completed']
         
         # First try to show a Program Task's info,
         # if it doesn't succeed, then show a Main Task's info
@@ -411,6 +414,8 @@ def app():
                 \n  End date: {ticket.end_date}\
                 \n  Worker: {ticket.worker}\
                 \n  Program: {ticket.program}\
+                \n  Description: {ticket.get_description()}\
+                \n  Status: {list_status[ticket.get_status()]}\
                 '''
             )
         except AttributeError:
@@ -421,8 +426,8 @@ def app():
             \n  Start date: {str(ticket.start_date.strftime('%x'))}\
             \n  End date: {ticket.end_date}\
             \n  Worker: {ticket.worker}\
-            \n  Description: {ticket.get_description()}
-            \n  Status: {ticket.get_status()}
+            \n  Description: {ticket.get_description()}\
+            \n  Status: {list_status[ticket.get_status()]}\
             '''
         )
 
@@ -436,7 +441,7 @@ def app():
 
         # Dropdown settings for status
         status_var = tk.StringVar()
-        list_status = ['Yet to start','In progress','Done']
+        list_status = ['Uncompleted','In progress','Completed']
         status_var.set(list_status[ticket.get_status()])
         
         
