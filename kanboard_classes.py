@@ -11,12 +11,10 @@ class MainTask:
 
 
 
-    def __init__(self, deadline, end_date, worker, description, status):
-        self.ticket_id=1
-        for i in data:
-            self.ticket_id+=1
+    def __init__(self, ticket_id, deadline, start_date, end_date, worker, description, status):
+        self.ticket_id=ticket_id
         self.deadline = deadline
-        self.start_date = datetime.datetime.now()
+        self.start_date = start_date
         self.end_date = end_date
         self.worker = worker
         self.description = description
@@ -52,8 +50,8 @@ class MainTask:
     
 
 class ProgramTask(MainTask):
-    def __init__(self, deadline, end_date, worker, description, status, program):
-        super().__init__(deadline, end_date, worker, description, status)
+    def __init__(self, ticket_id, deadline, start_date, end_date, worker, description, status, program):
+        super().__init__(ticket_id, deadline, start_date, end_date, worker, description, status)
         self.program=program
         self.kbpos = 2
 
