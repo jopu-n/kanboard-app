@@ -1,4 +1,4 @@
-# Name:         kanboard1
+# Name:         kanboard_classes.py
 # Modified by:  Johannes Natunen, Nico Kranni
 # Description:  Class file for the main program
 

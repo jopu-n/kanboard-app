@@ -3,7 +3,7 @@
 # Description:  Program that handles loading and saving data
 
 
-import kanboard1 as kb
+import kanboard_classes as kb
 import pickle, sys
 
 

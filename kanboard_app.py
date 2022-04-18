@@ -1,4 +1,4 @@
-# Name:         guitest.py
+# Name:         kanboard_app.py
 # Modified by:  Johannes Natunen, Nico Kranni
 # Description:  A GUI program, that turns class objects into more visual
 
@@ -6,7 +6,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import save
-import kanboard1 as kb
+import kanboard_classes as kb
 
 def app():
     root = tk.Tk()
@@ -277,7 +277,6 @@ def app():
             \n  Worker: {ticket.get_worker()}\
             '''
         )
-        check_status()
         if ticket.get_status()==0:
             button = ttk.Button(
             frame_buttons1,
@@ -352,79 +351,81 @@ def app():
     canvas2.config(scrollregion=canvas2.bbox('all'))
     canvas3.config(scrollregion=canvas3.bbox('all'))
     
-    # Launch the GUI
-    root.mainloop()
 
 
-def show_info(ticket):
-    top = tk.Toplevel()
-    top.title('Information')
-    top.geometry('500x450')
-    try:
-        text = (
+    def show_info(ticket):
+        top = tk.Toplevel()
+        top.title('Information')
+        top.geometry('500x450')
+        try:
+            text = (
+                f'''\
+                Ticket id: {str(ticket.ticket_id)}\
+                \n  Deadline: {ticket.deadline}\
+                \n  Start date: {str(ticket.start_date.strftime('%x'))}\
+                \n  End date: {ticket.end_date}\
+                \n  Worker: {ticket.worker}\
+                \n  Program: {ticket.program}\
+                '''
+            )
+        except AttributeError:
+            text = (
             f'''\
             Ticket id: {str(ticket.ticket_id)}\
             \n  Deadline: {ticket.deadline}\
             \n  Start date: {str(ticket.start_date.strftime('%x'))}\
             \n  End date: {ticket.end_date}\
             \n  Worker: {ticket.worker}\
-            \n  Program: {ticket.program}\
+            \n  Description: {ticket.get_description()}
+            \n  Status: {ticket.get_status()}
             '''
         )
-    except AttributeError:
-        text = (
-        f'''\
-        Ticket id: {str(ticket.ticket_id)}\
-        \n  Deadline: {ticket.deadline}\
-        \n  Start date: {str(ticket.start_date.strftime('%x'))}\
-        \n  End date: {ticket.end_date}\
-        \n  Worker: {ticket.worker}\
-        \n  Description: {ticket.get_description()}
-        \n  Status: {ticket.get_status()}
-        '''
-    )
 
-    
-    text_box = tk.Text(top)
-    text_box.pack()
-    text_box.insert('end', text)
-    text_box.config(state='disabled')
+        
+        text_box = tk.Text(top)
+        text_box.pack()
+        text_box.insert('end', text)
+        text_box.config(state='disabled')
 
 
-    # Dropdown settings for status
-    status_var = tk.StringVar()
-    list_status = ['Yet to start','In progress','Done']
-    status_var.set(list_status[ticket.get_status()])
-    
-    
-    # Dropdown box with status settings
-    status_label = tk.Label(top, text='Status: ')
-    status_menu = tk.OptionMenu(top, status_var, *list_status)
-    status_label.pack()
-    status_menu.pack()
-
-    def on_closing():
-        ticket.set_status(list_status.index(status_var.get()))
-        check_status()
-        save.save_all()
+        # Dropdown settings for status
+        status_var = tk.StringVar()
+        list_status = ['Yet to start','In progress','Done']
+        status_var.set(list_status[ticket.get_status()])
         
         
+        # Dropdown box with status settings
+        status_label = tk.Label(top, text='Status: ')
+        status_menu = tk.OptionMenu(top, status_var, *list_status)
+        status_label.pack()
+        status_menu.pack()
+
+        def on_closing():
+            ticket.set_status(list_status.index(status_var.get()))
+            check_status()
+            save.save_all()
+            
+            
+            
+            top.destroy()
+
+
+        top.protocol('WM_DELETE_WINDOW', on_closing)
+
+
+    def check_status():
+        uncompleted = []
+        in_progress = []
+        done = []
+
+        for item in kb.data:
+            if item.get_status() == 0: uncompleted.append(item)
+            elif item.get_status() == 1: in_progress.append(item)
+            elif item.get_status() == 2: done.append(item)
+
         
-        top.destroy()
 
-
-    top.protocol('WM_DELETE_WINDOW', on_closing)
-
-
-def check_status():
-    uncompleted = []
-    in_progress = []
-    done = []
-
-    for item in kb.data:
-        if item.get_status() == 0: uncompleted.append(item)
-        elif item.get_status() == 1: in_progress.append(item)
-        elif item.get_status() == 2: done.append(item)
-
+    # Launch the GUI
+    root.mainloop()
 
 app()
