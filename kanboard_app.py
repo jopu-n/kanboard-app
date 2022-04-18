@@ -347,6 +347,7 @@ def app():
             style='Fun.TButton',
         )
         
+        # Place the button (new ticket) to the frame
         button.grid(
             column=0,
             row=ticket.ticket_id,
@@ -367,6 +368,7 @@ def app():
         canvas2.config(scrollregion=canvas2.bbox('all'))
         canvas3.config(scrollregion=canvas3.bbox('all'))
 
+    # Add tickets from data list to the frames in the main window
 
     for item in items: # Seems like pickle objects have the real objects inside them
         for ticket in item: # Thus, we have to loop two times
@@ -391,11 +393,15 @@ def app():
     canvas3.config(scrollregion=canvas3.bbox('all'))
     
 
-
+    # show_info function for showing a ticket's info when it is clicked.
+    # in the information window, the user can also change the ticket's status
     def show_info(ticket):
         top = tk.Toplevel() # The Toplevel class is a new window which can be created from the main window
         top.title('Information')
         top.geometry('500x450')
+        
+        # First try to show a Program Task's info,
+        # if it doesn't succeed, then show a Main Task's info
         try:
             text = (
                 f'''\
@@ -420,7 +426,8 @@ def app():
             '''
         )
 
-        
+        # Placing the information of the ticket into a 
+        # tkinter text box
         text_box = tk.Text(top)
         text_box.pack()
         text_box.insert('end', text)
@@ -439,16 +446,19 @@ def app():
         status_label.pack()
         status_menu.pack()
 
+        # When the window is closed, this function executes
         def on_closing():
-            old_status = ticket.get_status()
+            old_status = ticket.get_status() # Save ticket status before changing it
             ticket.set_status(list_status.index(status_var.get()))
-            update_status(ticket, old_status)            
-            top.destroy()
+            update_status(ticket, old_status) # Call update_status function             
+            top.destroy() # Finally, DESTROY the window.
 
-
+        # When the window is closed, call this function
         top.protocol('WM_DELETE_WINDOW', on_closing)
 
-
+    # This function re-organizes the tickets
+    # to ensure they are correct. 
+    # 18.4.2022: Does not really seem to do anything useful anymore
     def check_status():
         uncompleted = []
         in_progress = []
@@ -459,9 +469,12 @@ def app():
             elif item.get_status() == 1: in_progress.append(item)
             elif item.get_status() == 2: done.append(item)
 
-    
+    # A status update function strictly for updating a ticket's status.
+    # First, it copies a ticket's info, then deletes the ticket and creates a
+    # new ticket with the exact same information, just with a new status.
     def update_status(ticket, old_status):
-
+        
+        # Save the ticket's information before deletion
         ticket_id = ticket.get_ticket_id()
         ticket_deadline = ticket.get_deadline()
         ticket_start_date = ticket.get_start_date()
@@ -471,11 +484,14 @@ def app():
         ticket_status = ticket.get_status()
         ticket_program = None
         ticket_type_num = 0
+
+        # If the ticket is a program task, save the program too.
         if isinstance(ticket, kb.ProgramTask): 
             ticket_program = ticket.get_program()
             ticket_type_num = 1
 
-        # Following part copied from remove function
+        # Following part copied from remove function.
+        # Deletes the ticket from the kanboard.
 
         remove = ticket_id
         for i in kb.data:
@@ -490,7 +506,8 @@ def app():
                 kb.data.remove(i)
         
 
-        # Following part copied from new_ticket function
+        # Following part copied from new_ticket function.
+        # Adds a new ticket to the kanboard.
 
         if ticket_type_num == 0:
             new_ticket = kb.MainTask(ticket_id, ticket_deadline, ticket_start_date, ticket_end_date, ticket_worker, ticket_description, ticket_status)
